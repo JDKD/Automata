@@ -1,0 +1,14 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "automata:item/item_automaton_iron_head"
+  },
+  "variants": {
+    "normal": [
+      { "model": "automata:item/item_automaton_iron_head" },
+      { "model": "automata:item/item_automaton_iron_head" },
+      { "model": "automata:item/item_automaton_iron_head", "y": 180 },
+      { "model": "automata:item/item_automaton_iron_head", "y": 180 }
+    ]
+  }
+}

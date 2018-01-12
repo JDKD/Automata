@@ -1,45 +1,63 @@
 package com.jdkd.automata.utils;
 
-import static net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity;
-
 import com.jdkd.automata.AutomataMain;
 import com.jdkd.automata.entities.automaton.EntityAutomata;
 import com.jdkd.automata.items.AutomataItems;
+import com.jdkd.automata.items.parts.AutomatonMaterial;
+import com.jdkd.automata.items.parts.AutomatonPart;
+import com.jdkd.automata.items.parts.AutomatonPartType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 
+import static net.minecraftforge.fml.common.registry.EntityRegistry.registerModEntity;
+
 @Mod.EventBusSubscriber
 public class AutomataRegistry {
 
     @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event){
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
     }
 
     @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event){
+    public static void registerItems(RegistryEvent.Register<Item> event) {
         AutomataItems.intialiseParts();
 
         for (Item item : AutomataItems.parts) {
-            event.getRegistry().register(item);
+
+            AutomatonPart part = (AutomatonPart) item;
+            if (part.getMaterial().equals(AutomatonMaterial.IRON) && part.getPartType().equals(AutomatonPartType.HEAD)) {
+                event.getRegistry().register(item);
+            }
         }
 
-        event.getRegistry().register(AutomataItems.debugger);
+       // event.getRegistry().register(AutomataItems.debugger);
     }
 
     @SubscribeEvent
-    public static void registerEntities(RegistryEvent.Register<EntityEntry> event){
+    public static void registerModels(ModelRegistryEvent event) {
+        for (Item item : AutomataItems.parts) {
+            AutomatonPart part = (AutomatonPart) item;
+            if (part.getMaterial().equals(AutomatonMaterial.IRON) && part.getPartType().equals(AutomatonPartType.HEAD)) {
+                AutomataMain.proxy.registerItemRenderer(item, 0, item.getUnlocalizedName().substring(5));
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void registerEntities(RegistryEvent.Register<EntityEntry> event) {
         registerEntities(EntityAutomata.class, "base_automata", 21);
     }
 
     @SubscribeEvent
-    public static void registerRecipes(RegistryEvent.Register<IRecipe> event){
+    public static void registerRecipes(RegistryEvent.Register<IRecipe> event) {
     }
 
     @SuppressWarnings("SameParameterValue")
