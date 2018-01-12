@@ -53,23 +53,6 @@ public class EntityAutomata extends EntityGolem {
     }
 
     @Override
-    protected void applyEntityAttributes() {
-        super.applyEntityAttributes();
-
-        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(1.0D);
-        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(0.25D);
-
-        if(parts != null) {
-            for (AutomatonPart part : parts.values()) {
-                for (AutomatonAttributeModifier modifier : part.getAttributeModifiers()) {
-                    modifier.modifyAttribute(this);
-                }
-            }
-        }
-
-    }
-
-    @Override
     protected int decreaseAirSupply(int air) {
         return air;
     }
@@ -85,7 +68,6 @@ public class EntityAutomata extends EntityGolem {
                 if (!player.isCreative()) {
                     stack.shrink(1);
                 }
-                applyEntityAttributes();
                 markDirty();
             }
         }

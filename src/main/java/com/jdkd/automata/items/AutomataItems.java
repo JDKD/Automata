@@ -26,11 +26,6 @@ public class AutomataItems {
     public static final Item obsidianLegs = new ItemAutomatonLeg(AutomatonMaterial.OBSIDIAN);
 
     public static void intialiseParts(){
-        List<AutomatonAttributeModifier> modifiers = new ArrayList<>();
-        modifiers.add(new AutomatonAttributeModifierSetter(SharedMonsterAttributes.MAX_HEALTH, 10));
-        modifiers.add(new AutomatonAttributeModifierSetter(SharedMonsterAttributes.MOVEMENT_SPEED, 1D));
-
-        ((AutomatonPart)diamondLegs).setAttributeModifiers(modifiers);
     }
 
 }
