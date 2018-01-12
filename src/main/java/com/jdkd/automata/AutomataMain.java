@@ -1,5 +1,6 @@
 package com.jdkd.automata;
 
+import com.jdkd.automata.items.AutomataItems;
 import com.jdkd.automata.utils.AutomataRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;

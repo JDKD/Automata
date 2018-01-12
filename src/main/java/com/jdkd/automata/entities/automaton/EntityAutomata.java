@@ -1,14 +1,14 @@
 package com.jdkd.automata.entities.automaton;
 
-import com.jdkd.automata.items.parts.AutomatonAttributeModifier;
 import com.jdkd.automata.items.parts.AutomatonPart;
 import com.jdkd.automata.items.parts.AutomatonPartType;
 import com.jdkd.automata.items.parts.arms.AutomatonArm;
 import com.jdkd.automata.items.parts.head.AutomatonHead;
 import com.jdkd.automata.items.parts.legs.AutomatonLeg;
 import com.jdkd.automata.items.parts.shell.AutomatonShell;
+import com.jdkd.automata.items.util.ItemAutomatonInspector;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.*;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -20,6 +20,7 @@ import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -38,6 +39,7 @@ public class EntityAutomata extends EntityGolem {
     public EntityAutomata(World worldIn, AutomatonPart shell) {
         this(worldIn);
         setItem(shell);
+        applyAttributes(shell);
     }
 
     public EntityAutomata(World worldIn) {
@@ -53,6 +55,23 @@ public class EntityAutomata extends EntityGolem {
     }
 
     @Override
+    protected void applyEntityAttributes() {
+        super.applyEntityAttributes();
+
+        this.getAttributeMap().registerAttribute(SharedMonsterAttributes.ATTACK_DAMAGE);
+        this.getAttributeMap().registerAttribute(AutomatonAttributes.CARRY_CAPACITY);
+        this.getAttributeMap().registerAttribute(AutomatonAttributes.CONDUCTIVITY);
+        this.getAttributeMap().registerAttribute(AutomatonAttributes.INTELLIGENCE);
+
+        this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).setBaseValue(10D);
+        this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).setBaseValue(1D);
+        this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).setBaseValue(1D);
+        this.getEntityAttribute(AutomatonAttributes.CARRY_CAPACITY).setBaseValue(1D);
+        this.getEntityAttribute(AutomatonAttributes.CONDUCTIVITY).setBaseValue(1D);
+        this.getEntityAttribute(AutomatonAttributes.INTELLIGENCE).setBaseValue(1D);
+    }
+
+    @Override
     protected int decreaseAirSupply(int air) {
         return air;
     }
@@ -64,11 +83,20 @@ public class EntityAutomata extends EntityGolem {
 
         if (stack != null && stack.getItem() != null) {
             if (stack.getItem() instanceof AutomatonPart) {
-                setItem((AutomatonPart) stack.getItem());
+                AutomatonPart item = (AutomatonPart) stack.getItem();
+                setItem(item);
+                applyAttributes(item);
                 if (!player.isCreative()) {
                     stack.shrink(1);
                 }
                 markDirty();
+            } else if (stack.getItem() instanceof ItemAutomatonInspector && player.world.isRemote) {
+                player.sendStatusMessage(new TextComponentString("Health : " + this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue()), false);
+                player.sendStatusMessage(new TextComponentString("Speed : " + this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()), false);
+                player.sendStatusMessage(new TextComponentString("Damage : " + this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()), false);
+                player.sendStatusMessage(new TextComponentString("Conductivity : " + this.getEntityAttribute(AutomatonAttributes.CONDUCTIVITY).getAttributeValue()), false);
+                player.sendStatusMessage(new TextComponentString("Intelligence : " + this.getEntityAttribute(AutomatonAttributes.INTELLIGENCE).getAttributeValue()), false);
+                player.sendStatusMessage(new TextComponentString("Carry Capacity : " + this.getEntityAttribute(AutomatonAttributes.CARRY_CAPACITY).getAttributeValue()), false);
             }
         }
 
@@ -96,6 +124,25 @@ public class EntityAutomata extends EntityGolem {
         }
 
         parts.put(part.getPartType(), part);
+    }
+
+    public void applyAttributes(AutomatonPart part){
+        switch (part.getPartType()) {
+            case BODY:
+                this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Automaton body health modifier", part.getMaterial().getHealthModifier(), 2));
+                break;
+            case HEAD:
+                this.getEntityAttribute(AutomatonAttributes.INTELLIGENCE).applyModifier(new AttributeModifier("Automaton head intelligence modifier", part.getMaterial().getIntelligenceModifier(), 2));
+                break;
+            case ARM:
+                this.getEntityAttribute(AutomatonAttributes.CONDUCTIVITY).applyModifier(new AttributeModifier("Automaton arm conductivity modifier", part.getMaterial().getCapacitiveModifier(), 2));
+                this.getEntityAttribute(AutomatonAttributes.CARRY_CAPACITY).applyModifier(new AttributeModifier("Automaton arm carry modifier", part.getMaterial().getCarryModifier(), 2));
+                this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Automaton arm damage modifier", part.getMaterial().getDamageModifier(), 2));
+                break;
+            case LEG:
+                this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Automaton leg speed modifier", part.getMaterial().getSpeedModifier(), 2));
+                break;
+        }
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {
