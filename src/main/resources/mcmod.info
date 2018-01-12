@@ -1,0 +1,12 @@
+[{
+  "modid": "automata",
+  "name": "Automata",
+  "description": "Create your own automata!",
+  "version": "1.0.0.0",
+  "mcversion": "1.10.2",
+  "logoFile": "assets/automata/textures/logo.png",
+  "url": "minecraftforge.net/",
+  "updateJSON": "minecraftforge.net/versions.json",
+  "authorList": ["JDKD"],
+  "credits": "I'd like to thank my mother and father."
+}]
