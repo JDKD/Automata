@@ -13,17 +13,18 @@ import java.util.List;
 
 public class AutomataItems {
 
-    public static List<Item> items = new ArrayList<>();
+    public static List<Item> parts = new ArrayList<>();
+    public static Item debugger;
 
     public static void intialiseParts(){
         for(AutomatonMaterial material : AutomatonMaterial.values()){
-            items.add(new ItemAutomatonShell(material));
-            items.add(new ItemAutomatonHead(material));
-            items.add(new ItemAutomatonArm(material));
-            items.add(new ItemAutomatonLeg(material));
+            parts.add(new ItemAutomatonShell(material));
+            parts.add(new ItemAutomatonHead(material));
+            parts.add(new ItemAutomatonArm(material));
+            parts.add(new ItemAutomatonLeg(material));
         }
 
-        items.add(new ItemAutomatonInspector());
+        debugger = new ItemAutomatonInspector();
 
     }
 

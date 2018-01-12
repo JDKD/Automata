@@ -24,14 +24,13 @@ public class AutomataRegistry {
 
     @SubscribeEvent
     public static void registerItems(RegistryEvent.Register<Item> event){
-//        event.getRegistry().registerAll(AutomataItems.shell, AutomataItems.head, AutomataItems.woodHead, AutomataItems.goldArms, AutomataItems
-//        .diamondLegs, AutomataItems.obsidianLegs, AutomataItems.inspector);
-
         AutomataItems.intialiseParts();
 
-        for (Item item : AutomataItems.items) {
+        for (Item item : AutomataItems.parts) {
             event.getRegistry().register(item);
         }
+
+        event.getRegistry().register(AutomataItems.debugger);
     }
 
     @SubscribeEvent
