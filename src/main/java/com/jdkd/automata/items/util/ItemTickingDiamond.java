@@ -25,15 +25,23 @@ public class ItemTickingDiamond extends Item {
     @SideOnly(Side.CLIENT)
     @Override
     public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
-        for(TickSpeed tick : TickSpeed.values()){
-            ItemStack subStack = new ItemStack(this, 1, tick.ordinal());
-            items.add(subStack);
+        if(tab != null && tab.equals(AutomataMain.tab)) {
+            for (TickSpeed tick : TickSpeed.values()) {
+                ItemStack subStack = new ItemStack(this, 1, tick.ordinal());
+                items.add(subStack);
+            }
         }
     }
 
     @Override
     public String getUnlocalizedName(ItemStack stack) {
-        return super.getUnlocalizedName() + "." + TickSpeed.values()[stack.getMetadata()];
+        return super.getUnlocalizedName() + "." + TickSpeed.values()[stack.getMetadata()].toString().toLowerCase();
+    }
+
+    @SideOnly(Side.CLIENT)
+    @Override
+    public boolean hasEffect(ItemStack stack) {
+        return true;
     }
 
 

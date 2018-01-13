@@ -9,10 +9,10 @@
       "item": "minecraft:redstone"
     },
     "X": {
-      "item": "minecraft:iron_ingot"
+      "item": "minecraft:gold_ingot"
     }
   },
   "result": {
-    "item": "automata:item_automaton_iron_head"
+    "item": "automata:item_automaton_gold_head"
   }
 }

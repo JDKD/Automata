@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "#Y#",
+    "Z Z",
+    "X X"
+  ],
+  "key": {
+    "#": {
+      "item": "minecraft:piston"
+    },
+    "X": {
+      "item": "minecraft:sticky_piston"
+    },
+    "Y": {
+      "item": "minecraft:redstone"
+    },
+    "Z": {
+      "item": "minecraft:obsidian"
+    }
+  },
+  "result": {
+    "item": "automata:item_automaton_obsidian_arm"
+  }
+}

@@ -1,0 +1,38 @@
+itemGroup.tabAutomata=Automata
+
+item.item_automaton_wood_body.name=Wooden Automaton Body
+item.item_automaton_wood_head.name=Wooden Automaton Head
+item.item_automaton_wood_arm.name=Wooden Automaton Arms
+item.item_automaton_wood_leg.name=Wooden Automaton Legs
+
+item.item_automaton_stone_body.name=Stone Automaton Body
+item.item_automaton_stone_head.name=Stone Automaton Head
+item.item_automaton_stone_arm.name=Stone Automaton Arms
+item.item_automaton_stone_leg.name=Stone Automaton Legs
+
+item.item_automaton_iron_body.name=Iron Automaton Body
+item.item_automaton_iron_head.name=Iron Automaton Head
+item.item_automaton_iron_arm.name=Iron Automaton Arms
+item.item_automaton_iron_leg.name=Iron Automaton Legs
+
+item.item_automaton_obsidian_body.name=Obsidian Automaton Body
+item.item_automaton_obsidian_head.name=Obsidian Automaton Head
+item.item_automaton_obsidian_arm.name=Obsidian Automaton Arms
+item.item_automaton_obsidian_leg.name=Obsidian Automaton Legs
+
+item.item_automaton_gold_body.name=Golden Automaton Body
+item.item_automaton_gold_head.name=Golden Automaton Head
+item.item_automaton_gold_arm.name=Golden Automaton Arms
+item.item_automaton_gold_leg.name=Golden Automaton Legs
+
+item.item_automaton_diamond_body.name=Diamond Automaton Body
+item.item_automaton_diamond_head.name=Diamond Automaton Head
+item.item_automaton_diamond_arm.name=Diamond Automaton Arms
+item.item_automaton_diamond_leg.name=Diamond Automaton Legs
+
+item.item_automaton_inspector.name=Automaton Inspector
+item.item_ticking_diamond.one.name=Ticking Diamond (1 TPS)
+item.item_ticking_diamond.two.name=Ticking Diamond (2 TPS)
+item.item_ticking_diamond.four.name=Ticking Diamond (4 TPS)
+item.item_ticking_diamond.eight.name=Ticking Diamond (8 TPS)
+item.item_ticking_diamond.sixteen.name=Ticking Diamond (16 TPS)

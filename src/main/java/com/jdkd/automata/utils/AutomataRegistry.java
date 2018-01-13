@@ -4,6 +4,7 @@ import com.jdkd.automata.AutomataMain;
 import com.jdkd.automata.entities.automaton.EntityAutomata;
 import com.jdkd.automata.items.AutomataItems;
 import com.jdkd.automata.items.parts.AutomatonPart;
+import com.jdkd.automata.proxy.CommonProxy;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;

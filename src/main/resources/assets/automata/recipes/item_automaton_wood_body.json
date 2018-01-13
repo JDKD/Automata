@@ -1,0 +1,42 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ZYZ",
+    "ZZZ",
+    "ZZZ"
+  ],
+  "key": {
+    "Y": {
+      "item": "minecraft:redstone"
+    },
+    "Z":[
+      {
+        "item": "minecraft:planks",
+        "data": 0
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 1
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 2
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 3
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 4
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 5
+      }
+    ]
+  },
+  "result": {
+    "item": "automata:item_automaton_wood_body"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+      {
+        "item": "automata:item_ticking_diamond",
+        "data": 3
+      },
+      {
+        "item": "automata:item_ticking_diamond",
+        "data": 3
+      }
+    ],
+  "result": {
+    "item": "automata:item_ticking_diamond",
+    "data": 4
+  }
+}
