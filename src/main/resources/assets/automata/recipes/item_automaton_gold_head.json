@@ -2,9 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "XXX",
-    "XYX"
+    "XZX",
+    " Y "
   ],
   "key": {
+    "Z": {
+      "item": "minecraft:observer"
+    },
     "Y": {
       "item": "minecraft:redstone"
     },

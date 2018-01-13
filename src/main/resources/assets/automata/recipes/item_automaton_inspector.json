@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "  Y",
+    " X ",
+    "Z  "
+  ],
+  "key": {
+    "X": {
+      "item": "minecraft:iron_nugget"
+    },
+    "Y": {
+      "item": "minecraft:glass_pane",
+      "data": 0
+    },
+    "Z": {
+      "item": "minecraft:stick"
+    }
+  },
+  "result": {
+    "item": "automata:item_automaton_inspector"
+  }
+}
