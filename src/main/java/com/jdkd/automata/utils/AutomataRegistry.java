@@ -43,6 +43,8 @@ public class AutomataRegistry {
             AutomatonPart part = (AutomatonPart) item;
             AutomataMain.proxy.registerItemRenderer(item, 0, item.getUnlocalizedName().substring(5));
         }
+
+        AutomataMain.proxy.registerItemRenderer(AutomataItems.debugger, 0, AutomataItems.debugger.getUnlocalizedName().substring(5));
     }
 
     @SubscribeEvent

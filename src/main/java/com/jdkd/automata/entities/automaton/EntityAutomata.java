@@ -9,6 +9,8 @@ import com.jdkd.automata.items.parts.shell.AutomatonShell;
 import com.jdkd.automata.items.util.ItemAutomatonInspector;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityGolem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -17,12 +19,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,6 +36,12 @@ public class EntityAutomata extends EntityGolem {
     private static final DataParameter<ItemStack> HEAD_TYPE = EntityDataManager.<ItemStack>createKey(EntityAutomata.class, DataSerializers.ITEM_STACK);
     private static final DataParameter<ItemStack> ARM_TYPE = EntityDataManager.<ItemStack>createKey(EntityAutomata.class, DataSerializers.ITEM_STACK);
     private static final DataParameter<ItemStack> LEG_TYPE = EntityDataManager.<ItemStack>createKey(EntityAutomata.class, DataSerializers.ITEM_STACK);
+    public static final String AUTOMATON_BODY_HEALTH_MODIFIER = "Automaton body health modifier";
+    public static final String AUTOMATON_HEAD_INTELLIGENCE_MODIFIER = "Automaton head intelligence modifier";
+    public static final String AUTOMATON_ARM_CONDUCTIVITY_MODIFIER = "Automaton arm conductivity modifier";
+    public static final String AUTOMATON_ARM_CARRY_MODIFIER = "Automaton arm carry modifier";
+    public static final String AUTOMATON_ARM_DAMAGE_MODIFIER = "Automaton arm damage modifier";
+    public static final String AUTOMATON_LEG_SPEED_MODIFIER = "Automaton leg speed modifier";
 
     private Map<AutomatonPartType, AutomatonPart> parts;
     private boolean isDirty;
@@ -84,6 +94,7 @@ public class EntityAutomata extends EntityGolem {
         if (stack != null && stack.getItem() != null) {
             if (stack.getItem() instanceof AutomatonPart) {
                 AutomatonPart item = (AutomatonPart) stack.getItem();
+                removePart(item.getPartType(), player.world);
                 setItem(item);
                 applyAttributes(item);
                 if (!player.isCreative()) {
@@ -101,6 +112,25 @@ public class EntityAutomata extends EntityGolem {
         }
 
         return super.applyPlayerInteraction(player, vec, hand);
+    }
+
+    private void removePart(AutomatonPartType type, World world){
+        ItemStack equippedPart = getPart(type);
+
+        if(equippedPart != null && !world.isRemote) {
+            EntityItem stackEntity = new EntityItem(world, this.posX, this.posY, this.posZ);
+            stackEntity.setItem(equippedPart);
+            world.spawnEntity(stackEntity);
+        }
+    }
+
+    @Override
+    public void onDeath(DamageSource cause) {
+        super.onDeath(cause);
+
+        for(AutomatonPartType type : AutomatonPartType.values()){
+            removePart(type, world);
+        }
     }
 
     public void setItem(AutomatonPart part) {
@@ -129,20 +159,32 @@ public class EntityAutomata extends EntityGolem {
     public void applyAttributes(AutomatonPart part){
         switch (part.getPartType()) {
             case BODY:
-                this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).applyModifier(new AttributeModifier("Automaton body health modifier", part.getMaterial().getHealthModifier(), 2));
+                applyModifiers(SharedMonsterAttributes.MAX_HEALTH, new AttributeModifier(AUTOMATON_BODY_HEALTH_MODIFIER, part.getMaterial().getHealthModifier(), 2));
                 break;
             case HEAD:
-                this.getEntityAttribute(AutomatonAttributes.INTELLIGENCE).applyModifier(new AttributeModifier("Automaton head intelligence modifier", part.getMaterial().getIntelligenceModifier(), 2));
+                applyModifiers(AutomatonAttributes.INTELLIGENCE, new AttributeModifier(AUTOMATON_HEAD_INTELLIGENCE_MODIFIER, part.getMaterial().getIntelligenceModifier(), 2));
                 break;
             case ARM:
-                this.getEntityAttribute(AutomatonAttributes.CONDUCTIVITY).applyModifier(new AttributeModifier("Automaton arm conductivity modifier", part.getMaterial().getCapacitiveModifier(), 2));
-                this.getEntityAttribute(AutomatonAttributes.CARRY_CAPACITY).applyModifier(new AttributeModifier("Automaton arm carry modifier", part.getMaterial().getCarryModifier(), 2));
-                this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).applyModifier(new AttributeModifier("Automaton arm damage modifier", part.getMaterial().getDamageModifier(), 2));
+                applyModifiers(AutomatonAttributes.CONDUCTIVITY, new AttributeModifier(AUTOMATON_ARM_CONDUCTIVITY_MODIFIER, part.getMaterial().getCapacitiveModifier(), 2));
+                applyModifiers(AutomatonAttributes.CARRY_CAPACITY, new AttributeModifier(AUTOMATON_ARM_CARRY_MODIFIER, part.getMaterial().getCarryModifier(), 2));
+                applyModifiers(SharedMonsterAttributes.ATTACK_DAMAGE, new AttributeModifier(AUTOMATON_ARM_DAMAGE_MODIFIER, part.getMaterial().getDamageModifier(), 2));
                 break;
             case LEG:
-                this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).applyModifier(new AttributeModifier("Automaton leg speed modifier", part.getMaterial().getSpeedModifier(), 2));
+                applyModifiers(SharedMonsterAttributes.MOVEMENT_SPEED, new AttributeModifier(AUTOMATON_LEG_SPEED_MODIFIER, part.getMaterial().getSpeedModifier(), 2));
                 break;
         }
+    }
+
+    private void applyModifiers(IAttribute attribute, AttributeModifier newModifier){
+
+        Collection<AttributeModifier> currentModifiers = this.getEntityAttribute(attribute).getModifiers();
+
+        for (AttributeModifier modifier : currentModifiers) {
+            this.getEntityAttribute(attribute).removeModifier(modifier);
+        }
+
+        this.getEntityAttribute(attribute).applyModifier(newModifier);
+
     }
 
     public void readEntityFromNBT(NBTTagCompound compound) {
