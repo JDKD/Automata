@@ -7,8 +7,7 @@ public enum AutomatonMaterial {
     IRON(4D, 0.25D, 1D, 1D, 2D, 0.5D),
     GOLD(0.5D, 0.5D, 0.5D, 0.25D, 3D, 1.5D),
     OBSIDIAN(8D, 0.1D, 0D, 1.5D, 1D, 0D),
-    DIAMOND(10D, 0.5D, 2D, 2D, 3D, 1D),
-    EMERALD(5D, 1D, 1D, 1D, 4D, 1.5D);
+    DIAMOND(10D, 0.5D, 2D, 2D, 3D, 1D);
 
     private double healthModifier, speedModifier, carryModifier, damageModifier, intelligenceModifier, capacitiveModifier;
 

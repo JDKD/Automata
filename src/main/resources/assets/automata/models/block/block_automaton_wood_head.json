@@ -1,6 +1,6 @@
 {
   "parent":"automata:block/block_automaton_head",
   "textures": {
-    "0": "automata:items/iron_head"
+    "0": "automata:items/wooden_head"
   }
 }

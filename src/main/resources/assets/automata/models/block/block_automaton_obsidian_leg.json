@@ -1,0 +1,6 @@
+{
+  "parent":"automata:block/block_automaton_leg",
+  "textures": {
+    "0": "automata:items/obsidian_body"
+  }
+}

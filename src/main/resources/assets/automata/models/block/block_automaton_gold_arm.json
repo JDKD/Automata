@@ -1,0 +1,6 @@
+{
+  "parent":"automata:block/block_automaton_arm",
+  "textures": {
+    "0": "automata:items/gold_body"
+  }
+}

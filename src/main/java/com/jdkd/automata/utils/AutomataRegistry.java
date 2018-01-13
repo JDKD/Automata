@@ -3,9 +3,7 @@ package com.jdkd.automata.utils;
 import com.jdkd.automata.AutomataMain;
 import com.jdkd.automata.entities.automaton.EntityAutomata;
 import com.jdkd.automata.items.AutomataItems;
-import com.jdkd.automata.items.parts.AutomatonMaterial;
 import com.jdkd.automata.items.parts.AutomatonPart;
-import com.jdkd.automata.items.parts.AutomatonPartType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -33,21 +31,17 @@ public class AutomataRegistry {
         for (Item item : AutomataItems.parts) {
 
             AutomatonPart part = (AutomatonPart) item;
-            if (part.getMaterial().equals(AutomatonMaterial.IRON) && part.getPartType().equals(AutomatonPartType.HEAD)) {
-                event.getRegistry().register(item);
-            }
+            event.getRegistry().register(item);
         }
 
-       // event.getRegistry().register(AutomataItems.debugger);
+        event.getRegistry().register(AutomataItems.debugger);
     }
 
     @SubscribeEvent
     public static void registerModels(ModelRegistryEvent event) {
         for (Item item : AutomataItems.parts) {
             AutomatonPart part = (AutomatonPart) item;
-            if (part.getMaterial().equals(AutomatonMaterial.IRON) && part.getPartType().equals(AutomatonPartType.HEAD)) {
-                AutomataMain.proxy.registerItemRenderer(item, 0, item.getUnlocalizedName().substring(5));
-            }
+            AutomataMain.proxy.registerItemRenderer(item, 0, item.getUnlocalizedName().substring(5));
         }
     }
 
