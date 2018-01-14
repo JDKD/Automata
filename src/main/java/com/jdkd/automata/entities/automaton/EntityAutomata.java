@@ -101,13 +101,23 @@ public class EntityAutomata extends EntityGolem {
                     stack.shrink(1);
                 }
                 markDirty();
-            } else if (stack.getItem() instanceof ItemAutomatonInspector && player.world.isRemote) {
-                player.sendStatusMessage(new TextComponentString("Health : " + this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue()), false);
-                player.sendStatusMessage(new TextComponentString("Speed : " + this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()), false);
-                player.sendStatusMessage(new TextComponentString("Damage : " + this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()), false);
-                player.sendStatusMessage(new TextComponentString("Conductivity : " + this.getEntityAttribute(AutomatonAttributes.CONDUCTIVITY).getAttributeValue()), false);
-                player.sendStatusMessage(new TextComponentString("Intelligence : " + this.getEntityAttribute(AutomatonAttributes.INTELLIGENCE).getAttributeValue()), false);
-                player.sendStatusMessage(new TextComponentString("Carry Capacity : " + this.getEntityAttribute(AutomatonAttributes.CARRY_CAPACITY).getAttributeValue()), false);
+            } else if (stack.getItem() instanceof ItemAutomatonInspector) {
+                if(!player.isSneaking() && player.world.isRemote) {
+                    player.sendStatusMessage(new TextComponentString("Health : " + this.getEntityAttribute(SharedMonsterAttributes.MAX_HEALTH).getAttributeValue()), false);
+                    player.sendStatusMessage(new TextComponentString("Speed : " + this.getEntityAttribute(SharedMonsterAttributes.MOVEMENT_SPEED).getAttributeValue()), false);
+                    player.sendStatusMessage(new TextComponentString("Damage : " + this.getEntityAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getAttributeValue()), false);
+                    player.sendStatusMessage(new TextComponentString("Conductivity : " + this.getEntityAttribute(AutomatonAttributes.CONDUCTIVITY).getAttributeValue()), false);
+                    player.sendStatusMessage(new TextComponentString("Intelligence : " + this.getEntityAttribute(AutomatonAttributes.INTELLIGENCE).getAttributeValue()), false);
+                    player.sendStatusMessage(new TextComponentString("Carry Capacity : " + this.getEntityAttribute(AutomatonAttributes.CARRY_CAPACITY).getAttributeValue()), false);
+                }
+
+                if(player.isSneaking() && !player.world.isRemote){
+                    setDead();
+
+                    for(AutomatonPartType type : AutomatonPartType.values()){
+                        removePart(type, world);
+                    }
+                }
             }
         }
 
@@ -320,5 +330,10 @@ public class EntityAutomata extends EntityGolem {
 
     private void markDirty(){
         isDirty = true;
+    }
+
+    @Override
+    protected boolean canDespawn() {
+        return false;
     }
 }
